@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useCameraStore, selectIsCountdownActive } from '@/store';
 
 export default function Navigation() {
   const pathname = usePathname();
+  const isCountdownActive = useCameraStore(selectIsCountdownActive);
 
   // Navigation items configuration
   const navItems = [
@@ -16,6 +18,7 @@ export default function Navigation() {
   const navItemBase = "px-4 py-2 rounded-lg font-medium transition-colors";
   const activeClasses = "bg-blue-500 text-white";
   const inactiveClasses = "text-gray-600 hover:text-gray-900 hover:bg-gray-100";
+  const disabledClasses = "text-gray-400 cursor-not-allowed bg-gray-100";
 
   const isActive = (path: string) => pathname === path;
 
@@ -30,15 +33,29 @@ export default function Navigation() {
 
           {/* Links */}
           <div className="flex space-x-2">
-            {navItems.map((item) => (
-              <Link 
-                key={item.href}
-                href={item.href}
-                className={`${navItemBase} ${isActive(item.href) ? activeClasses : inactiveClasses}`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              if (isCountdownActive) {
+                // Show disabled button during countdown
+                return (
+                  <div
+                    key={item.href}
+                    className={`${navItemBase} ${disabledClasses}`}
+                  >
+                    {item.label}
+                  </div>
+                );
+              }
+              
+              return (
+                <Link 
+                  key={item.href}
+                  href={item.href}
+                  className={`${navItemBase} ${isActive(item.href) ? activeClasses : inactiveClasses}`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
