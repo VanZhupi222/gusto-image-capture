@@ -1,14 +1,15 @@
 'use client';
 
 import { useRef, useEffect, useCallback } from 'react';
-import { useCameraPermission, useCountdown } from '@/libs/hooks';
-import { usePhotoStore, selectCapturedImage, selectSetCapturedImage, selectClearCapturedImage } from '@/store';
+import { useCameraPermission, useCountdown, useFaceDetection } from '@/libs/hooks';
+import { usePhotoStore, selectCapturedImage, selectSetCapturedImage, selectClearCapturedImage, selectIsAnalyzing, selectSetIsAnalyzing } from '@/store';
 import { CAMERA_COUNTDOWN_DURATION, PHOTO_QUALITY } from '@/libs/constants';
 
 import PhotoResult from './PhotoResult';
 import CameraError from './CameraError';
 import CameraPreview from './CameraPreview';
 import CameraWaiting from './CameraWaiting';
+import AnalysisLoading from './AnalysisLoading';
 
 export default function CameraCapture() {
   const {
@@ -20,9 +21,17 @@ export default function CameraCapture() {
     stopStream
   } = useCameraPermission();
 
+  const {
+    preloadDetector,
+    detectFaces,
+    isReady: isFaceDetectionReady
+  } = useFaceDetection();
+
   const capturedImage = usePhotoStore(selectCapturedImage);
   const setCapturedImage = usePhotoStore(selectSetCapturedImage);
   const clearCapturedImage = usePhotoStore(selectClearCapturedImage);
+  const isAnalyzing = usePhotoStore(selectIsAnalyzing);
+  const setIsAnalyzing = usePhotoStore(selectSetIsAnalyzing);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -55,6 +64,18 @@ export default function CameraCapture() {
     }
   }, [stream]);
 
+  // Preload face detector when camera permission is granted
+  useEffect(() => {
+    if (permissionStatus === 'granted' && !isFaceDetectionReady) {
+      const preloadInIdle = () => {
+        preloadDetector().catch((error) => {
+          console.error('Failed to preload face detector:', error);
+        });
+      };
+      requestIdleCallback(preloadInIdle, { timeout: 2000 });
+    }
+  }, [permissionStatus, isFaceDetectionReady, preloadDetector]);
+
   // Retake photo, connect video to stream
   useEffect(() => {
     if (stream && videoRef.current && !capturedImage) {
@@ -71,10 +92,46 @@ export default function CameraCapture() {
     }
   }, [clearCapturedImage, stream, permissionStatus, requestPermission]);
 
-  const analyzePhoto = () => {
-    // TODO: Implement photo analysis logic
-    console.log('Analyzing photo...');
-  };
+  const handleAnalyzePhoto = useCallback(async () => {
+    if (!capturedImage) return;
+
+    // Check if the detector is ready
+    if (!isFaceDetectionReady) {
+      setIsAnalyzing(true);
+      try {
+        await preloadDetector();
+      } catch (error) {
+        console.error('Failed to load face detector:', error);
+        setIsAnalyzing(false);
+        return;
+      }
+    }
+
+    setIsAnalyzing(true);
+    try {
+      const img = new Image();
+      img.src = capturedImage;
+      await new Promise((resolve) => {
+        img.onload = resolve;
+      });
+      
+      const result = await detectFaces(img);
+
+      if (result.success) {
+        console.log(`Face detection successful: ${result.faceCount} faces detected`);
+        // TODO: Upload photo to server here
+        // TODO: Navigate to result page
+      } else {
+        await retakePhoto();
+      }
+
+    } catch (error) {
+      console.error('Face detection analysis failed:', error);
+      await retakePhoto();
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }, [capturedImage, setIsAnalyzing, detectFaces, retakePhoto, isFaceDetectionReady, preloadDetector]);
 
   // TODO: Implement file upload logic
   const handleFileUpload = () => {
@@ -105,11 +162,17 @@ export default function CameraCapture() {
 
   const renderContent = () => {
     if (capturedImage) {
+      if (isAnalyzing) {
+        return (
+          <AnalysisLoading capturedImage={capturedImage} />
+        );
+      }
+      
       return (
         <PhotoResult
           capturedImage={capturedImage}
           onRetakePhoto={retakePhoto}
-          onAnalyzePhoto={analyzePhoto}
+          onAnalyzePhoto={handleAnalyzePhoto}
         />
       );
     }
