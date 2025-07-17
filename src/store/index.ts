@@ -3,7 +3,9 @@ export {
   usePhotoStore,
   selectCapturedImage,
   selectSetCapturedImage,
-  selectClearCapturedImage
+  selectClearCapturedImage,
+  selectIsAnalyzing,
+  selectSetIsAnalyzing
 } from './usePhotoStore';
 
 // Camera Store  
