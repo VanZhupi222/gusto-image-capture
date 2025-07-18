@@ -13,11 +13,11 @@ export default function Card({
   padding = 'lg',
   className = ''
 }: CardProps) {
-  const baseClasses = "bg-white rounded-lg transition-all";
+  const baseClasses = "bg-surface-primary rounded-lg transition-all";
 
   const variantClasses = {
-    default: "shadow-md border border-gray-100",
-    outlined: "border-2 border-gray-200 hover:border-gray-300",
+    default: "shadow-md border border-surface-tertiary",
+    outlined: "border-2 border-surface-tertiary hover:border-secondary",
     elevated: "shadow-lg hover:shadow-xl"
   };
 
