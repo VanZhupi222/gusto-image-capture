@@ -29,7 +29,6 @@ export default function Card({
     xl: "p-10"
   };
 
-  // 组合所有className
   const allClasses = `${baseClasses} ${variantClasses[variant]} ${paddingClasses[padding]} ${className}`;
 
   return (
