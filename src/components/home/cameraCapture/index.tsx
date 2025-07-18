@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCameraPermission, useCountdown, useFaceDetection } from '@/libs/hooks';
 import { usePhotoStore, selectCapturedImage, selectSetCapturedImage, selectClearCapturedImage, selectIsAnalyzing, selectSetIsAnalyzing } from '@/store';
 import { CAMERA_COUNTDOWN_DURATION, PHOTO_QUALITY } from '@/libs/constants';
@@ -12,6 +13,8 @@ import CameraWaiting from './CameraWaiting';
 import AnalysisLoading from './AnalysisLoading';
 
 export default function CameraCapture() {
+  const router = useRouter();
+  
   const {
     permissionStatus,
     stream,
@@ -120,7 +123,7 @@ export default function CameraCapture() {
       if (result.success) {
         console.log(`Face detection successful: ${result.faceCount} faces detected`);
         // TODO: Upload photo to server here
-        // TODO: Navigate to result page
+        router.push('/result');
       } else {
         await retakePhoto();
       }
@@ -131,7 +134,7 @@ export default function CameraCapture() {
     } finally {
       setIsAnalyzing(false);
     }
-  }, [capturedImage, setIsAnalyzing, detectFaces, retakePhoto, isFaceDetectionReady, preloadDetector]);
+  }, [capturedImage, setIsAnalyzing, detectFaces, retakePhoto, isFaceDetectionReady, preloadDetector, router]);
 
   // TODO: Implement file upload logic
   const handleFileUpload = () => {

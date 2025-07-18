@@ -1,7 +1,5 @@
+import Result from '@/components/result';
+
 export default function ResultPage() {
-  return (
-    <div>
-      Hello World
-    </div>
-  );
+  return <Result />;
 }

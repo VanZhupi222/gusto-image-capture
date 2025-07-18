@@ -21,14 +21,14 @@ export default function CameraWaiting({
 
   return (
     <>
-      <h2 className="text-2xl font-semibold text-gray-800 text-center">
+      <h2 className="text-2xl font-semibold text-primary text-center">
         Camera Capture
       </h2>
       
-      <div className="w-4/5 bg-gray-200 rounded-lg aspect-video flex items-center justify-center">
-        <div className="text-gray-500 text-center">
+      <div className="w-4/5 bg-surface-tertiary rounded-lg aspect-video flex items-center justify-center">
+        <div className="text-muted text-center">
           <div className="text-4xl mb-2">📷</div>
-          <p className={errorMessage.includes('error') ? 'text-red-600' : ''}>{errorMessage}</p>
+          <p className={errorMessage.includes('error') ? 'text-error-text' : ''}>{errorMessage}</p>
           {isLoading && <p className="text-sm">Loading...</p>}
         </div>
       </div>

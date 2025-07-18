@@ -15,12 +15,12 @@ export default function Button({
   variant = 'primary',
   className = ''
 }: ButtonProps) {
-  const baseClasses = "text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors hover:cursor-pointer disabled:bg-gray-300 disabled:cursor-not-allowed";
+  const baseClasses = "text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors hover:cursor-pointer disabled:bg-muted disabled:cursor-not-allowed";
 
   const variantClasses = {
-    primary: "bg-blue-500 hover:bg-blue-600",
-    secondary: "bg-gray-500 hover:bg-gray-600", 
-    success: "bg-green-500 hover:bg-green-600"
+    primary: "bg-accent hover:bg-accent-hover",
+    secondary: "bg-accent-secondary hover:bg-accent-secondary-hover", 
+    success: "bg-success-text hover:bg-success-text-secondary"
   };
   
   const allClasses = `${baseClasses} ${variantClasses[variant]} ${className}`;
