@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navigation from "@/components/ui/navigation";
+import { ToastProvider } from "@/components/ui/toast/ToastProvider";
 import "./globals.css";
 import React from "react";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <Navigation />
         {children}
+        <ToastProvider />
       </body>
     </html>
   );

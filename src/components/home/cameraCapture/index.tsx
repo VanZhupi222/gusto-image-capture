@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCameraPermission, useCountdown, useFaceDetection } from '@/libs/hooks';
+import { useCameraPermission, useCountdown, useFaceDetection, useToast } from '@/libs/hooks';
 import { usePhotoStore, selectCapturedImage, selectSetCapturedImage, selectClearCapturedImage, selectIsAnalyzing, selectSetIsAnalyzing } from '@/store';
 import { CAMERA_COUNTDOWN_DURATION, PHOTO_QUALITY } from '@/libs/constants';
 
@@ -29,6 +29,8 @@ export default function CameraCapture() {
     detectFaces,
     isReady: isFaceDetectionReady
   } = useFaceDetection();
+
+  const toast = useToast();
 
   const capturedImage = usePhotoStore(selectCapturedImage);
   const setCapturedImage = usePhotoStore(selectSetCapturedImage);
@@ -105,6 +107,7 @@ export default function CameraCapture() {
         await preloadDetector();
       } catch (error) {
         console.error('Failed to load face detector:', error);
+        toast.error('Face detection failed. Please try again.');
         setIsAnalyzing(false);
         return;
       }
@@ -125,11 +128,13 @@ export default function CameraCapture() {
         // TODO: Upload photo to server here
         router.push('/result');
       } else {
+        toast.error('No face detected. Please retake the photo.');
         await retakePhoto();
       }
 
     } catch (error) {
       console.error('Face detection analysis failed:', error);
+      toast.error('Face detection failed. Please try again.');
       await retakePhoto();
     } finally {
       setIsAnalyzing(false);
