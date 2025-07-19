@@ -3,7 +3,7 @@
 import { useEffect, useCallback } from 'react';
 import { useCameraPermission, useCountdown, useFaceDetection, useToast, useFileUpload, usePhotoAnalysis, useCameraOperations } from '@/libs/hooks';
 import { usePhotoStore, selectCapturedImage, selectSetCapturedImage, selectIsAnalyzing } from '@/store';
-import { CAMERA_COUNTDOWN_DURATION } from '@/libs/constants';
+import { CAMERA_COUNTDOWN_DURATION, CAMERA_TEXT } from '@/libs/constants';
 
 import PhotoResult from './PhotoResult';
 import CameraError from './CameraError';
@@ -50,11 +50,11 @@ export default function CameraCapture() {
   const { uploadImage } = useFileUpload({
     onSuccess: (imageUrl) => {
       setCapturedImage(imageUrl);
-      toast.success('Image uploaded successfully');
+      toast.success(CAMERA_TEXT.IMAGE_UPLOAD_SUCCESS);
     },
     onError: (error) => {
       console.error('Failed to upload image:', error);
-      toast.error('Failed to upload image');
+      toast.error(CAMERA_TEXT.IMAGE_UPLOAD_ERROR);
     }
   });
 
@@ -125,7 +125,7 @@ export default function CameraCapture() {
       );
     }
 
-    const errorMessage = error?.message || 'Enable camera to start taking photos';
+    const errorMessage = error?.message || CAMERA_TEXT.DEFAULT_ERROR_MESSAGE;
     const showCameraButton = !error || error.type !== 'device';
     return (
       <CameraWaiting

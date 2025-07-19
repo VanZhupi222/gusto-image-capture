@@ -3,7 +3,7 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFaceDetection, useToast } from './index';
-import { usePhotoStore, selectSetIsAnalyzing } from '@/store';
+import { usePhotoStore, selectSetIsAnalyzing, selectSetAnalyzed } from '@/store';
 
 export interface UsePhotoAnalysisReturn {
   analyzePhoto: (capturedImage: string, onRetakePhoto: () => Promise<void>) => Promise<void>;
@@ -20,6 +20,7 @@ export function usePhotoAnalysis(): UsePhotoAnalysisReturn {
   } = useFaceDetection();
 
   const setIsAnalyzing = usePhotoStore(selectSetIsAnalyzing);
+  const setAnalyzed = usePhotoStore(selectSetAnalyzed);
 
   const analyzePhoto = useCallback(async (
     capturedImage: string, 
@@ -52,6 +53,7 @@ export function usePhotoAnalysis(): UsePhotoAnalysisReturn {
 
       if (result.success) {
         console.log(`Face detection successful: ${result.faceCount} faces detected`);
+        setAnalyzed(true);
         // TODO: Upload photo to server here
         router.push('/result');
       } else {
@@ -66,7 +68,7 @@ export function usePhotoAnalysis(): UsePhotoAnalysisReturn {
     } finally {
       setIsAnalyzing(false);
     }
-  }, [isFaceDetectionReady, preloadDetector, detectFaces, router, toast, setIsAnalyzing]);
+  }, [isFaceDetectionReady, preloadDetector, detectFaces, router, toast, setIsAnalyzing, setAnalyzed]);
 
   return {
     analyzePhoto
