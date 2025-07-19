@@ -18,8 +18,6 @@ export function usePhotoUpload(): UsePhotoUploadReturn {
   const capturedImage = usePhotoStore(selectCapturedImage);
 
   const uploadPhoto = useCallback(async (imageData: string): Promise<string | null> => {
-    
-    // Generate client hash for this upload
     const clientHash = generateClientHash(imageData);
     setClientHash(clientHash);
     

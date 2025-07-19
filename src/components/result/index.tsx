@@ -83,7 +83,7 @@ export default function Result() {
       );
     }
 
-    // 7. Default case - should not reach here
+    // 7. Default case
     return <NoPhotoContent onTakePhoto={handleTakeNewPhoto} />;
   };
 
