@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useCallback } from 'react';
-import { usePhotoStore, selectSetCapturedImage, selectClearCapturedImage } from '@/store';
+import { usePhotoStore, selectSetCapturedImage, selectClearCapturedImage, selectClearUploadedPhotos } from '@/store';
 import { PHOTO_QUALITY } from '@/libs/constants';
 
 export interface UseCameraOperationsReturn {
@@ -19,6 +19,7 @@ export function useCameraOperations(
 ): UseCameraOperationsReturn {
   const setCapturedImage = usePhotoStore(selectSetCapturedImage);
   const clearCapturedImage = usePhotoStore(selectClearCapturedImage);
+  const clearUploadedPhotos = usePhotoStore(selectClearUploadedPhotos);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -38,7 +39,8 @@ export function useCameraOperations(
 
     const imageDataUrl = canvas.toDataURL('image/jpeg', PHOTO_QUALITY);
     setCapturedImage(imageDataUrl);
-  }, [setCapturedImage]);
+    clearUploadedPhotos();
+  }, [setCapturedImage, clearUploadedPhotos]);
 
   const retakePhoto = useCallback(async () => {
     clearCapturedImage();

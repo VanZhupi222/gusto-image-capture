@@ -3,6 +3,8 @@ export const RESULT_TEXT = {
   // Titles
   NO_PHOTO_TITLE: 'No Photo Available',
   PHOTO_CAPTURED_TITLE: 'Photo Captured',
+  ANALYZING_TITLE: 'Analyzing Photo',
+  UPLOADING_TITLE: 'Uploading Photo',
   ANALYSIS_COMPLETE_TITLE: 'Photo Analysis Complete',
 
   // No photo state
@@ -14,6 +16,17 @@ export const RESULT_TEXT = {
   PHOTO_CAPTURED_DESCRIPTION: 'Your photo has been captured successfully.',
   ANALYSIS_REQUIRED_TITLE: 'Analysis Required',
   ANALYSIS_REQUIRED_DESCRIPTION: 'This photo has not been analyzed yet. Please go back to the previous page and click the "Analyze Photo" button to perform face detection analysis.',
+
+  // Analyzing state
+  ANALYZING_DESCRIPTION: 'Detecting faces in your photo, please wait...',
+  
+  // Uploading state
+  UPLOADING_SUCCESS_TITLE: 'Face Detection Successful!',
+  UPLOADING_DESCRIPTION: 'Saving photo to server...',
+  UPLOAD_SUCCESS_TITLE: 'Upload Successful!',
+  UPLOAD_FAILED_TITLE: 'Upload Failed',
+  UPLOAD_FAILED_DESCRIPTION: 'Photo saved locally but could not upload to server',
+  RETRY_UPLOAD_BUTTON: 'Retry Upload',
   TAKE_NEW_PHOTO_BUTTON: 'Take New Photo',
 
   // Analysis complete state
