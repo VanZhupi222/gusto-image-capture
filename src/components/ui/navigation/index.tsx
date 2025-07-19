@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useCameraStore, selectIsCountdownActive } from '@/store';
+import { useCameraStore, selectIsCountdownActive, usePhotoStore, selectIsAnalyzing } from '@/store';
 
 export default function Navigation() {
   const pathname = usePathname();
   const isCountdownActive = useCameraStore(selectIsCountdownActive);
+  const isAnalyzing = usePhotoStore(selectIsAnalyzing);
 
   // Navigation items configuration
   const navItems = [
@@ -34,7 +35,7 @@ export default function Navigation() {
           {/* Links */}
           <div className="flex space-x-2">
             {navItems.map((item) => {
-              if (isCountdownActive) {
+              if (isCountdownActive || isAnalyzing) {
                 // Show disabled button during countdown
                 return (
                   <div

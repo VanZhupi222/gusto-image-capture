@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useFaceDetection, useToast } from './index';
+import { useFaceDetection, useToast, usePhotoUpload } from './index';
 import { usePhotoStore, selectSetIsAnalyzing, selectSetAnalyzed } from '@/store';
 
 export interface UsePhotoAnalysisReturn {
@@ -18,6 +18,8 @@ export function usePhotoAnalysis(): UsePhotoAnalysisReturn {
     detectFaces,
     isReady: isFaceDetectionReady
   } = useFaceDetection();
+
+  const { uploadPhoto } = usePhotoUpload();
 
   const setIsAnalyzing = usePhotoStore(selectSetIsAnalyzing);
   const setAnalyzed = usePhotoStore(selectSetAnalyzed);
@@ -54,7 +56,7 @@ export function usePhotoAnalysis(): UsePhotoAnalysisReturn {
       if (result.success) {
         console.log(`Face detection successful: ${result.faceCount} faces detected`);
         setAnalyzed(true);
-        // TODO: Upload photo to server here
+        uploadPhoto(capturedImage);
         router.push('/result');
       } else {
         toast.error('No face detected. Please retake the photo.');
