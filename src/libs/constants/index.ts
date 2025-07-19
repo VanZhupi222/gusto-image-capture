@@ -8,3 +8,6 @@ export const IDEAL_CAMERA_HEIGHT = 720;
 
 // Face detection related
 export const MAX_FACES = 10000
+
+// UI text constants
+export { RESULT_TEXT, CAMERA_TEXT } from './ui-text';

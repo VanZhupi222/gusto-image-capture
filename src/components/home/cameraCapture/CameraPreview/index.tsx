@@ -1,5 +1,6 @@
 import { RefObject } from 'react';
 import Button from '@/components/ui/button';
+import { CAMERA_TEXT } from '@/libs/constants';
 
 interface CameraPreviewProps {
   videoRef: RefObject<HTMLVideoElement | null>;
@@ -23,7 +24,7 @@ export default function CameraPreview({
   return (
     <>
       <h2 className="text-2xl font-semibold text-gray-800 text-center">
-        Camera Capture
+        {CAMERA_TEXT.CAMERA_CAPTURE_TITLE}
       </h2>
       
       <div className="relative w-4/5 aspect-video bg-black rounded-lg overflow-hidden">
@@ -49,13 +50,13 @@ export default function CameraPreview({
 
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Button onClick={onStartCountdown} disabled={isActive}>
-          {isActive ? 'Taking Photo...' : 'Take Photo'}
+          {isActive ? CAMERA_TEXT.TAKING_PHOTO_BUTTON : CAMERA_TEXT.TAKE_PHOTO_BUTTON}
         </Button>
         <Button variant="secondary" onClick={onFileUpload} disabled={isActive}>
-          Upload from Device
+          {CAMERA_TEXT.UPLOAD_FROM_DEVICE_BUTTON}
         </Button>
         <Button variant="secondary" onClick={onDisableCamera} disabled={isActive}>
-          Disable Camera
+          {CAMERA_TEXT.DISABLE_CAMERA_BUTTON}
         </Button>
       </div>
 
