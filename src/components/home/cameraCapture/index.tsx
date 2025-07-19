@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCameraPermission, useCountdown, useFaceDetection, useToast } from '@/libs/hooks';
+import { useCameraPermission, useCountdown, useFaceDetection, useToast, useFileUpload } from '@/libs/hooks';
 import { usePhotoStore, selectCapturedImage, selectSetCapturedImage, selectClearCapturedImage, selectIsAnalyzing, selectSetIsAnalyzing } from '@/store';
 import { CAMERA_COUNTDOWN_DURATION, PHOTO_QUALITY } from '@/libs/constants';
 
@@ -31,6 +31,17 @@ export default function CameraCapture() {
   } = useFaceDetection();
 
   const toast = useToast();
+  
+  const { uploadImage } = useFileUpload({
+    onSuccess: (imageUrl) => {
+      setCapturedImage(imageUrl);
+      toast.success('Image uploaded successfully');
+    },
+    onError: (error) => {
+      console.error('Failed to upload image:', error);
+      toast.error('Failed to upload image');
+    }
+  });
 
   const capturedImage = usePhotoStore(selectCapturedImage);
   const setCapturedImage = usePhotoStore(selectSetCapturedImage);
@@ -141,24 +152,7 @@ export default function CameraCapture() {
     }
   }, [capturedImage, setIsAnalyzing, detectFaces, retakePhoto, isFaceDetectionReady, preloadDetector, router]);
 
-  // TODO: Implement file upload logic
-  const handleFileUpload = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const result = e.target?.result as string;
-          setCapturedImage(result);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    input.click();
-  };
+  const handleFileUpload = uploadImage;
 
   const refreshPage = () => {
     window.location.reload();
