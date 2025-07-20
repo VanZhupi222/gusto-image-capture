@@ -133,7 +133,6 @@ Key components include:
 ### Image Analysis Method & Fallback Strategy
 
 - **Tool**: I used `@tensorflow-models/face-detection`. It's a free, open-source library that runs directly in the browser. This is implemented in the `useFaceDetection` hook (`src/libs/hooks/useFaceDetection.ts`).
-- **Why I chose it**: It's a strong tool that is fast and protects user privacy because the image analysis happens on the user's device.
 - **How it works**: The check passes if the tool finds **at least one face**.
 ```typescript
   // Simplified from libs/hooks/useFaceDetection.ts
