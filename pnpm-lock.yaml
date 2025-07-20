@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@mediapipe/face_detection':
-        specifier: ^0.4.1646425229
-        version: 0.4.1646425229
       '@tensorflow-models/face-detection':
         specifier: ^1.0.3
         version: 1.0.3(@mediapipe/face_detection@0.4.1646425229)(@tensorflow/tfjs-backend-webgl@4.22.0(@tensorflow/tfjs-core@4.22.0))(@tensorflow/tfjs-converter@4.22.0(@tensorflow/tfjs-core@4.22.0))(@tensorflow/tfjs-core@4.22.0)

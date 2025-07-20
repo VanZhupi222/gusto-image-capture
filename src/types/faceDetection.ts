@@ -1,11 +1,29 @@
+// Face detection types for TensorFlow.js
+export interface Face {
+  box: {
+    xMin: number;
+    yMin: number;
+    xMax: number;
+    yMax: number;
+    width: number;
+    height: number;
+  };
+  keypoints?: Array<{
+    x: number;
+    y: number;
+    name?: string;
+  }>;
+  score?: number;
+}
+
 export interface FaceDetector {
-  estimateFaces: (image: HTMLImageElement | HTMLCanvasElement) => Promise<any[]>;
+  estimateFaces: (image: HTMLImageElement | HTMLCanvasElement) => Promise<Face[]>;
 }
 
 export interface FaceDetectionResult {
   success: boolean;
   faceCount: number;
-  faces?: any[];
+  faces?: Face[];
   error?: string;
 }
 
