@@ -81,7 +81,6 @@ export function useFaceDetection(): UseFaceDetectionReturn {
       
       // Use color analysis as fallback
       const colorAnalysisSuccess = checkRedPixels(image);
-      console.log('colorAnalysisSuccess', colorAnalysisSuccess);
       
       return {
         success: colorAnalysisSuccess,
