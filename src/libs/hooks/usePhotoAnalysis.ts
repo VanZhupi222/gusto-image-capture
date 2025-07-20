@@ -70,7 +70,7 @@ export function usePhotoAnalysis(): UsePhotoAnalysisReturn {
     } finally {
       setIsAnalyzing(false);
     }
-  }, [isFaceDetectionReady, preloadDetector, detectFaces, router, toast, setIsAnalyzing, setAnalyzed]);
+  }, [isFaceDetectionReady, preloadDetector, detectFaces, router, toast, setIsAnalyzing, setAnalyzed, uploadPhoto]);
 
   return {
     analyzePhoto

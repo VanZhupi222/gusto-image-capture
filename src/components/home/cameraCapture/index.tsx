@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback } from 'react';
 import { useCameraPermission, useCountdown, useFaceDetection, useToast, useFileUpload, usePhotoAnalysis, useCameraOperations } from '@/libs/hooks';
-import { usePhotoStore, selectCapturedImage, selectSetCapturedImage, selectIsAnalyzing } from '@/store';
+import { usePhotoStore, selectCapturedImage, selectSetCapturedImage, selectIsAnalyzing, selectIsUploading } from '@/store';
 import { CAMERA_COUNTDOWN_DURATION, CAMERA_TEXT } from '@/libs/constants';
 
 import PhotoResult from './PhotoResult';
@@ -24,7 +24,7 @@ export default function CameraCapture() {
   const capturedImage = usePhotoStore(selectCapturedImage);
   const isAnalyzing = usePhotoStore(selectIsAnalyzing);
   const setCapturedImage = usePhotoStore(selectSetCapturedImage);
-
+  const isUploading = usePhotoStore(selectIsUploading);
 
   const toast = useToast();
   
@@ -87,7 +87,7 @@ export default function CameraCapture() {
 
   const renderContent = () => {
     if (capturedImage) {
-      if (isAnalyzing) {
+      if (isAnalyzing || isUploading) {
         return (
           <AnalysisLoading capturedImage={capturedImage} />
         );

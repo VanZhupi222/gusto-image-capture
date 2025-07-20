@@ -2,6 +2,7 @@
 export type {
   CameraPermissionStatus,
   CameraError,
+  MediaDevicesError,
   UseCameraPermissionReturn
 } from './camera';
 

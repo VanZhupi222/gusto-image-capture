@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import type { CameraError, UseCameraPermissionReturn } from '@/types';
+import type { CameraError, UseCameraPermissionReturn, MediaDevicesError } from '@/types';
 import { IDEAL_CAMERA_WIDTH, IDEAL_CAMERA_HEIGHT } from '@/libs/constants';
 import { 
   useCameraStore,
@@ -26,7 +26,7 @@ export function useCameraPermission(): UseCameraPermissionReturn {
   const setCameraError = useCameraStore(selectSetCameraError);
   const setIsLoading = useCameraStore(selectSetIsLoading);
 
-  const handleError = (err: any) => {
+  const handleError = (err: MediaDevicesError) => {
     const errorMap: Record<string, CameraError> = {
       NotAllowedError: {
         type: 'permission',
@@ -68,8 +68,8 @@ export function useCameraPermission(): UseCameraPermissionReturn {
       setIsLoading(false);
       return true;
 
-    } catch (err: any) {
-      handleError(err);
+    } catch (err) {
+      handleError(err as MediaDevicesError);
       setPermissionStatus('denied');
       setIsLoading(false);
       return false;

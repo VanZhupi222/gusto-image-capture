@@ -5,6 +5,10 @@ export interface CameraError {
   message: string;
 }
 
+export interface MediaDevicesError extends Error {
+  name: 'NotAllowedError' | 'NotFoundError' | 'NotReadableError' | string;
+}
+
 export interface UseCameraPermissionReturn {
   permissionStatus: CameraPermissionStatus;
   stream: MediaStream | null;

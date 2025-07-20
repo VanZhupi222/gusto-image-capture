@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import type { FaceDetector, FaceDetectionResult, UseFaceDetectionReturn } from '@/types';
+import { checkRedPixels } from '@/libs/utils';
 import { MAX_FACES } from "@/libs/constants";
 
 let globalDetector: FaceDetector | null = null;
@@ -76,11 +77,18 @@ export function useFaceDetection(): UseFaceDetectionReturn {
       };
 
     } catch (err) {
-      console.error('Face detection failed:', err);
+      console.error('Face detection failed, trying color analysis fallback:', err);
+      
+      // Use color analysis as fallback
+      const colorAnalysisSuccess = checkRedPixels(image);
+      console.log('colorAnalysisSuccess', colorAnalysisSuccess);
+      
       return {
-        success: false,
-        faceCount: 0,
-        error: 'Detection failed'
+        success: colorAnalysisSuccess,
+        faceCount: colorAnalysisSuccess ? 1 : 0,
+        error: colorAnalysisSuccess 
+          ? 'Face detection failed, but color analysis passed' 
+          : 'Both face detection and color analysis failed'
       };
     }
   }, [preloadDetector]);

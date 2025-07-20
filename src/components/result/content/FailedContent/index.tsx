@@ -35,7 +35,7 @@ export default function FailedContent({ imageUrl, uploadError, isRetrying, onRet
         <StatusMessage 
           type="warning"
           title={RESULT_TEXT.UPLOAD_FAILED_TITLE}
-          description={RESULT_TEXT.UPLOAD_FAILED_DESCRIPTION}
+          description={`${RESULT_TEXT.UPLOAD_FAILED_DESCRIPTION}: ${uploadError}`}
         />
       </div>
 
