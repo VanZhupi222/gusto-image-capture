@@ -15,7 +15,6 @@ First, clone the project and install the needed packages:
 
 ```bash
 git clone https://github.com/VanZhupi222/gusto-image-capture
-cd image-capture
 pnpm install
 ```
 
@@ -131,7 +130,7 @@ Key components include:
 
 ## Assumptions & Design Choices
 
-### Image Analysis Method
+### Image Analysis Method & Fallback Strategy
 
 - **Tool**: I used `@tensorflow-models/face-detection`. It's a free, open-source library that runs directly in the browser. This is implemented in the `useFaceDetection` hook (`src/libs/hooks/useFaceDetection.ts`).
 - **Why I chose it**: It's a strong tool that is fast and protects user privacy because the image analysis happens on the user's device.
@@ -174,6 +173,7 @@ Key components include:
 
 - The user interface is designed to be simple and easy to use.
 - You can use the keyboard to click buttons, and the colors are easy to see.
+- Animations and advanced visual effects were intentionally excluded to focus on functional implementation, in alignment with the scope and time constraints of a coding evaluation.
 
 ## Disclaimer
 
