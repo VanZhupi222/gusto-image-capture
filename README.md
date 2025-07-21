@@ -156,8 +156,6 @@ Key components include:
       -   In a **dark environment**, it looks for a significant presence of warm skin-like tones, assuming these indicate a person.
       -   In a **bright environment**, it does the opposite. It checks that the image is not dominated by red colors, which helps to filter out photos of inanimate red objects.
 
-  Here is a simplified code example from the `detectFaces` function in `useFaceDetection.ts` that shows this logic:
-
 ### State Management
 
 - **Tool**: Zustand, a simple state management library. The store is defined in `src/store/index.ts`.
